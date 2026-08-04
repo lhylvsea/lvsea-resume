@@ -1,6 +1,6 @@
 ---
 name: html-resume-builder
-description: Build, rewrite, QA, and expand one-page HTML/PDF resume templates from existing resumes, Word/PDF materials, portfolios, websites, or user notes. Use this skill whenever the user asks to create, iterate, polish, migrate, template-match, export, or design new resume/CV templates as HTML/PDF, especially when they care about strict layout, typography, one-page density, STAR wording, optional component DIY, QR/avatar assets, screenshot QA, template-agent variants, and final acceptance gates.
+description: Build, rewrite, QA, and expand one-page HTML/PDF resumes from existing resumes, Word/PDF materials, portfolios, websites, or user notes. Use this skill whenever the user asks to create, iterate, polish, migrate, export, or design resume/CV templates as HTML/PDF. Covers 12 bundled A4 templates, strict layout and typography gates, one-page density adaptation, STAR wording, content preservation rules, QR/avatar handling, and scripted export + screenshot QA.
 ---
 
 # HTML Resume Builder
@@ -43,6 +43,13 @@ These constraints override template defaults. They apply to every template in th
 - **Maximum page padding: 10mm on any side.** No template should have left/right/top padding exceeding 10mm. The A4 page is 210mm wide; content should occupy at least 190mm of horizontal space.
 - If a template uses absolute positioning, the leftmost content should start no later than 12mm from the page edge, and the rightmost content should end no earlier than 12mm from the right edge.
 - When the generated resume shows obvious blank strips on either side, reduce padding first before considering any other adjustment.
+- **Margins are also a floor, not just a ceiling.** Do not crush page padding below roughly 6mm to gain density. A resume whose content touches the paper edge reads as desperate, not efficient. Edges need quiet space to breathe.
+
+### White Space Principle (留白原则)
+
+- The density rules above exist to prevent hollow, half-empty pages — they are **not** a mandate to stuff the page. Deliberate white space is part of good typography: page margins, breathing room between sections, and a calm bottom edge within the 15% budget are features, not defects.
+- Never manufacture density. Do not solve "the page has white space" by inventing extra components, splitting content into additional columns, breaking paragraphs into pill grids, or adding decorative filler blocks. A page filled with layout gimmicks is worse than a page with honest white space.
+- When content genuinely runs light, the correct tools are typography (slightly larger type, taller line-height, calmer section rhythm) and — only if the user has real material — one meaningful optional section. When in doubt, prefer a calm, slightly airy page over a crowded one.
 
 ### Density Adaptation (密度自适应)
 
@@ -209,7 +216,7 @@ After the first PDF export, inspect the screenshot as a whole page, not only lin
    - Increase body font-size by 0.5–1pt
    - Increase line-height by 0.05–0.1
    - Increase section gaps by 1–2mm
-   - Only after all three are maxed out, consider adding an optional section (awards, tools, self-summary)
+   - Only after all three are maxed out, consider adding an optional section (awards, tools, self-summary) — and only from real material the user provided. Never add extra columns, split rows, or decorative components purely to consume space; within the 15% bottom budget, remaining white space is intentional and acceptable
 3. **If content is dense** and overflows or feels cramped:
    - Remove abnormal hollow bands and reduce section gaps first (down to 4mm minimum between sections)
    - Reduce entry gaps (down to 2mm minimum)
@@ -239,7 +246,7 @@ Minimum checks:
 4. Render a JPEG/PNG screenshot using `pdftoppm` and inspect visually.
 5. Search for sensitive or stale terms:
    - old names, old emails, old phone numbers
-   - `patch`, `commit`, `群聊`, `ones`, `内部链接`
+   - `patch`, `commit`, `群聊`, `ones`, `内部链接` (ASCII terms match on word boundaries, so `dispatch`/`milestones`/`committed` do not false-positive)
    - unrelated self-media terms when the user asked to remove them
 6. Check visual layout:
    - no overlap, clipping, text touching QR/avatar, or title/body collision
@@ -279,6 +286,8 @@ When visual QA matters, show or inspect the rendered screenshot before declaring
 - `scripts/export_and_qa.py`: export an HTML resume to PDF and run basic checks.
 
 ## Quick Start Commands
+
+Prerequisites: Chrome or Chromium for PDF export, and poppler (`pdfinfo`/`pdffonts`/`pdftotext`/`pdftoppm`) for the QA checks. On macOS: `brew install poppler`. Missing poppler downgrades those checks to warnings instead of failing the run.
 
 Create a working copy from the bundled template:
 

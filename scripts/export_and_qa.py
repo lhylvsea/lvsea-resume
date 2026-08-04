@@ -31,6 +31,22 @@ STRICT_FINAL_FORBIDDEN_TERMS = [
 ]
 
 
+def find_forbidden_terms(haystack: str, terms: list[str]) -> list[str]:
+    """Match ASCII terms on word boundaries so `dispatch`/`milestones`/`committed`
+    do not false-positive `patch`/`ones`/`commit`; CJK terms keep substring match."""
+    hits = []
+    for term in terms:
+        if not term:
+            continue
+        if re.fullmatch(r"[A-Za-z0-9@.\-]+", term):
+            pattern = r"(?<![A-Za-z0-9])" + re.escape(term) + r"(?![A-Za-z0-9])"
+            if re.search(pattern, haystack):
+                hits.append(term)
+        elif term in haystack:
+            hits.append(term)
+    return hits
+
+
 def run(command: list[str]) -> tuple[int, str, str]:
     process = subprocess.run(command, capture_output=True, text=True)
     return process.returncode, process.stdout, process.stderr
@@ -152,7 +168,7 @@ def check_text(pdf: Path, html: Path, checks: list[dict], forbidden_terms: list[
 
     html_text = html.read_text(encoding="utf-8", errors="ignore")
     haystack = f"{text}\n{html_text}"
-    hits = [term for term in forbidden_terms if term and term in haystack]
+    hits = find_forbidden_terms(haystack, forbidden_terms)
     add_check(
         checks,
         "forbidden terms absent",

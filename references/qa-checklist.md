@@ -65,7 +65,7 @@ Open or inspect the rendered screenshot.
 
 - If the PDF becomes two pages: remove abnormal gaps first, compress repetition without fact loss, then adjust line-height and type within the readability floor. Ask before deleting content.
 - If text looks dense: add a small amount of line-height before increasing page gaps.
-- If content feels sparse: enlarge font, line-height, and vertical rhythm instead of inventing weak achievements; do not leave bottom whitespace above 15%.
+- If content feels sparse: enlarge font, line-height, and vertical rhythm instead of inventing weak achievements; do not leave bottom whitespace above 15%. Never fill space with extra columns, split rows, or decorative components — within the 15% budget, deliberate white space (page margins, section breathing room) is correct typography, not a defect.
 - If typography feels loose horizontally: do not add arbitrary `letter-spacing`; preserve it only when the source template already uses that rule.
 - If a highlight refuses to wrap: remove `nowrap` from the highlighted span unless it protects a short metric.
 - If third-level projects feel disconnected: compress gaps inside the same company and keep company-to-company gaps only slightly larger.
