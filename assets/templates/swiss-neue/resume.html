@@ -22,7 +22,7 @@ html, body {
   height: 297mm;
   overflow: hidden;
   /* Visual centering: left padding smaller because label col is lightweight */
-  padding: 10mm 10mm 10mm 8mm;
+  padding: 10mm 12mm 10mm 7mm;
 }
 
 /* Flex row system */
@@ -33,17 +33,17 @@ html, body {
 .section { margin-top: 9.6mm; }
 .entry + .entry { margin-top: 4.5mm; }
 
-/* Label column: 24mm, right-aligned */
+/* Label column: 16mm, right-aligned — keep content off the right edge */
 .label {
-  width: 24mm;
-  min-width: 24mm;
+  width: 16mm;
+  min-width: 16mm;
   text-align: right;
   font-size: 8.5pt;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 1.2pt;
   color: #999;
-  padding-right: 4.5mm;
+  padding-right: 3mm;
   flex-shrink: 0;
 }
 
