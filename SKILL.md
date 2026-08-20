@@ -65,6 +65,37 @@ A resume is not deliverable unless it is exactly one A4 page.
 
 `examples/demo/` is the out-of-the-box render: official `basic-a4` filled from `examples/demo.data.yaml`. Users can open `examples/demo/resume.html` immediately.
 
+## When the AI may change the look（什么时候可以改模板）
+
+There are four different jobs. Do not mix them. “改模板” almost never means inventing HTML.
+
+### A. 换数据（默认，随时可以，这不是改模板）
+
+User pastes YAML or says apply. Copy the official template, replace visible text, then tune density. Keep CSS, class names, `data-template`, and structure. This is the normal loop.
+
+### B. 换官方模板（用户要「全变样」时，这是最好的改法）
+
+Same YAML, different allowlisted id. Always `cp -R` a fresh official folder. Never mix two templates' CSS.
+
+Do this when:
+
+- The user names a template (`swiss-neue`, `gov-red`, …)
+- The user says 换风格 / 全变样 / 太普通 / 换一套
+- The current template is a bad fit (e.g. `gov-red` for a geek role, `sidebar-compact` overflowing, `code-poetry` for a 国企投递)
+- The first deliverable used the default `basic-a4` and the user wants a restyle
+
+If unsure which official template fits, show the 12-id table and ask. Do not invent a 13th look.
+
+### C. 在当前模板里微调版式（内容稳定之后才做）
+
+OK: font-size ±0.5–1pt, line-height, section/entry gaps, absolute coordinates, duplicating or deleting an existing official block of the same kind.
+
+Not OK: new sidebar, new grid, new color system, new font family, rewriting `resume.html` from scratch, stamping `data-template` onto invented markup.
+
+### D. 发明新模板（正常写简历时禁止）
+
+Only follow `references/template-expansion.md`: one direction, brief first, isolated workspace, compare against `basic-a4`, user admits it. A color swap is not a new template. Do not edit `assets/templates/` during a candidate resume run.
+
 ## Core Principles
 
 - Treat a resume as both a **content artifact** and a **layout artifact**. Improve the wording, but keep the visual hierarchy and template constraints under control.
