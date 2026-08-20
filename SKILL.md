@@ -1,15 +1,69 @@
 ---
 name: html-resume-builder
-description: Build, rewrite, QA, and expand one-page HTML/PDF resumes from existing resumes, Word/PDF materials, portfolios, websites, or user notes. Use this skill whenever the user asks to create, iterate, polish, migrate, export, or design resume/CV templates as HTML/PDF. Covers 12 bundled A4 templates, strict layout and typography gates, one-page density adaptation, STAR wording, content preservation rules, QR/avatar handling, and scripted export + screenshot QA.
+description: Build one-page HTML/PDF resumes from copy-paste YAML using one of 12 official templates. HARD GATES: deliver exactly one A4 page; never invent a layout — copy assets/templates/<id> into output/<id>/ and edit that copy only. Collect facts into resume.data.yaml for the user to copy, apply pasted YAML by replacing visible text in the official resume.html, then run QA. Default template is basic-a4. Use when creating, iterating, polishing, migrating, exporting, or designing resume/CV HTML/PDF.
 ---
 
 # HTML Resume Builder
 
-Use this skill to produce polished, one-page resume artifacts from raw materials. The default output is an editable HTML file and an exported PDF that follows a selected template exactly enough for recruiting use: stable A4 dimensions, consistent typography, predictable spacing, clear hierarchy, verified screenshot, and no accidental sensitive-material leaks.
+Use this skill to produce polished, **one-page** resume artifacts from structured facts. The default loop is **data first**: collect a `resume.data.yaml` the user can copy, wait for them to paste edits or say "apply", then restyle that data inside an official bundled template. The default output is an editable HTML file and an exported PDF that follows a selected template exactly enough for recruiting use: stable A4 dimensions, consistent typography, predictable spacing, clear hierarchy, verified screenshot, and no accidental sensitive-material leaks.
 
-This skill is intentionally workflow-heavy. Resume work fails when the model jumps straight into writing prose or nudges layout by eye without QA. Follow the staged process below.
+This skill is intentionally workflow-heavy. Resume work fails when the model jumps straight into writing prose, invents a new HTML document, or nudges layout by eye without QA. Follow the **Mandatory Workflow** below before any other step.
 
-When expanding the template library, work one direction at a time: produce a brief, implement in an isolated workspace, QA and compare against the baseline, then seek user approval before admission. Do not split the resume into module Agents; components are AI-decided slots inside the selected template. The admitted bundled templates are: `basic-a4` (baseline), `editorial` (dual-column editorial), `sidebar-compact` (dark sidebar), `timeline-grid` (growth timeline), `minimal-prose` (quiet prose), `mono-raw` (brutalist monospace), `code-poetry` (source-code metaphor), `swiss-neue` (Swiss grid), `bauhaus` (geometric editorial), `corporate-classic` (formal corporate), `gov-red` (Chinese institutional style), and `folio-ledger` (annual-report ledger).
+When expanding the template library, work one direction at a time: produce a brief, implement in an isolated workspace, QA and compare against the baseline, then seek user approval before admission. Do not split the resume into module Agents; components are AI-decided slots inside the selected template.
+
+## Mandatory Workflow (do this every time)
+
+These six steps are hard gates. Skipping them is a failed run, even if the page looks fine.
+
+### 1. Collect facts into `resume.data.yaml`
+
+Extract education, internships, projects, skills, contacts, and assets into a YAML file that matches `schema/resume.schema.json`. Use `examples/demo.data.yaml` as the copyable shape (name, title, contacts, summary, experience[], projects[], education[], skills[]).
+
+**Show the YAML to the user** so they can copy it, edit it in any editor, and paste it back. Do not hide the data inside chat-only notes.
+
+Suggested path: write `resume.data.yaml` where the user can see it, then copy it to `output/<template-id>/resume.data.yaml` when applying.
+
+### 2. Wait for the user to paste YAML back or say apply
+
+Do not start HTML work until the user pastes an edited YAML, points at a file, or explicitly asks to apply the current draft. If facts are incomplete, ask — do not invent metrics, employers, or dates.
+
+### 3. Copy the official template, then edit that copy only
+
+```bash
+mkdir -p output
+cp -R assets/templates/<template-id> output/<template-id>/
+```
+
+`python scripts/create_workspace.py --template <template-id> --output output/<template-id>` is equivalent.
+
+Edit **only** `output/<template-id>/resume.html` (and its local assets). Never edit files under `assets/templates/` for a candidate resume.
+
+### 4. Forbidden
+
+- Writing a new HTML document from scratch, even if it "looks like" a template
+- Using a template that is not in the 12-id allowlist
+- Skipping QA
+- Switching templates mid-run unless the user asks
+- Introducing a mustache / Handlebars / template-engine rewrite of the 12 official files. There is no render engine. Apply YAML by replacing **visible text** in the official `resume.html` while keeping CSS, class names, semantic `data-*` markers (including `data-template="<id>"`), and structure
+
+### 5. Template allowlist (12 ids)
+
+`basic-a4` (baseline) · `editorial` · `sidebar-compact` · `timeline-grid` · `minimal-prose` · `mono-raw` · `code-poetry` · `swiss-neue` · `bauhaus` · `corporate-classic` · `gov-red` · `folio-ledger`
+
+If the user does not pick a template, **default to `basic-a4` and say so**.
+
+### 6. One page is a hard stop
+
+A resume is not deliverable unless it is exactly one A4 page.
+
+1. Run existing QA scripts when they are present:
+   - `python scripts/export_and_qa.py output/<id>/resume.html --pdf output/<id>/resume.pdf --template <id>`
+   - `node scripts/check-template-id.mjs --html output/<id>/resume.html --template <id>`
+2. If `pdfinfo` page count ≠ 1, **do not deliver**. Compress layout within the existing density / typography-floor rules, or ask the user (named cuts vs. keep-all vs. an explicit two-page exception).
+3. If the user said `全部保留` / `不要删减`, do not delete facts to force one page — stop and ask.
+4. A screenshot or HTML that looks "almost one page" is not enough. The PDF page count must be 1.
+
+`examples/demo/` is the out-of-the-box render: official `basic-a4` filled from `examples/demo.data.yaml`. Users can open `examples/demo/resume.html` immediately.
 
 ## Core Principles
 
@@ -30,7 +84,7 @@ Treat an existing resume and user-prepared resume copy as source material the us
 - Default to preservation mode when iterating an existing PDF, Word, PPTX, or HTML resume. Text the user pastes and explicitly asks to include also counts as selected resume content. Keep every company, role, project, date, metric, credential, named deliverable, link, and user-authored bullet unless the user approves its removal.
 - A major edit includes deleting an entire entry or bullet, merging entries so a distinct fact disappears, removing a metric/result, changing section ownership, or replacing a specific accomplishment with a generic summary. Ask before making any of these changes.
 - Compression is allowed without a separate approval only when it removes repetition or shortens syntax while preserving the same facts, ownership, result, and level of specificity.
-- If the requested content does not fit one page, first repair layout and wording within the readability limits below. If it still does not fit, stop and give the user explicit choices: keep all content in two pages; approve a named list of lower-priority cuts; or keep one page with a denser but still readable layout.
+- If the requested content does not fit one page, first repair layout and wording within the readability limits below. If it still does not fit, **do not deliver**. Ask the user to choose: a denser but still readable one-page layout; a named list of lower-priority cuts; or an explicit two-page exception (never the default).
 - If the user says `全部保留`, `不要删减`, or equivalent, do not remove content. A one-page preference never overrides an explicit preservation request.
 - Maintain a short change ledger during iteration: `retained`, `compressed without fact loss`, and `proposed removal`. Show proposed removals to the user before applying them.
 
@@ -83,6 +137,8 @@ These constraints override template defaults. They apply to every template in th
 
 ## When Starting
 
+Run the Mandatory Workflow first. The steps below are intake details, not a license to skip YAML, the template copy, or QA.
+
 1. Identify the target role and audience.
    - Examples: `AI 技术产品`, `AIGC 智能评测`, `AI 视觉内容编导`, `游戏视频设计`, `产品运营`.
    - If the user gives no role, infer from the strongest recent materials, then state the assumption.
@@ -91,9 +147,10 @@ These constraints override template defaults. They apply to every template in th
    - Supporting materials: work summaries, project docs, portfolio websites, spreadsheets, screenshots.
    - Assets: avatar/headshot, QR code, portfolio URL, website URL.
    - Decide preservation mode: existing resume content and text explicitly requested for inclusion are `preserve by default`; background materials not marked for full inclusion may be selectively summarized only after the user understands that not every source detail will appear.
-3. Choose the template.
-   - Start with `assets/templates/basic-a4/` unless the user names another template.
-   - Future templates should live under `assets/templates/<template-name>/`.
+3. Choose the template from the 12-id allowlist only.
+   - If the user does not name one, default to `basic-a4` and tell them you did.
+   - Copy `assets/templates/<template-id>/` into `output/<template-id>/`. Do not write a new HTML file.
+   - Future templates should live under `assets/templates/<template-name>/` only after admission.
    - If expanding the template library, follow `references/template-expansion.md` before implementing or accepting any new template.
 4. Decide whether this is:
    - **Template migration**: style must match an existing resume.
@@ -124,8 +181,9 @@ These constraints override template defaults. They apply to every template in th
    | swiss-neue | 瑞士主义，隐形网格，克制优雅 |
    | bauhaus | 包豪斯几何，三原色点缀 |
 
-2. 如果用户没有明确偏好，默认使用 **basic-a4**。
-3. 用户确认后，锁定模板，不再中途切换（除非用户主动要求）。
+2. 如果用户没有明确偏好，默认使用 **basic-a4**，并明确告诉用户。
+3. 只允许上面这 12 个 id。用户点名 allowlist 之外的模板时，拒绝并列出允许的 id。
+4. 用户确认后，锁定模板，不再中途切换（除非用户主动要求）。
 
 ### Step 1.5: Style Lock
 
@@ -137,11 +195,11 @@ These constraints override template defaults. They apply to every template in th
 - 结构模块：姓名/信息、头像、个人介绍、教育经历、实习/工作经历、项目经历、核心能力、二维码
 - 组件位置：标题、分割线、日期对齐、正文缩进、头像和二维码位置
 
-对于已有 HTML 模板，直接编辑源文件。除非模板已经无法修复，否则不要从零重建布局。
+对于已有 HTML 模板，只编辑 `output/<template-id>/` 里的副本。除非模板已经无法修复，否则不要从零重建布局。
 
-### Step 2: Fact Extraction and Filtering
+### Step 2: Fact Extraction into `resume.data.yaml`
 
-Extract facts from source files and websites. Keep a short fact inventory before writing:
+Extract facts from source files and websites into `resume.data.yaml` (schema: `schema/resume.schema.json`). **Show this file to the user so they can copy it.** Keep a short fact inventory before writing:
 
 - Education: school, major, dates, GPA/rank, awards/certificates.
 - Internships: company, role, dates, responsibilities, shipped outputs, measurable results.
@@ -172,14 +230,16 @@ Avoid weak filler:
 
 If a metric is not public or not known, do not invent one. Use verifiable alternatives: release status, review passed, coverage scope, samples/cases, team adoption, portfolio link.
 
-### Step 4: HTML Implementation
+### Step 4: Apply YAML into the official HTML (do not invent a layout)
 
 Use the selected template directory:
 
-- Copy `assets/templates/basic-a4/` into the output workspace, or edit the user-provided HTML if iterating.
-- Replace only content and necessary asset references first.
-- Adjust positions after content is stable.
+- **Required:** `cp -R assets/templates/<template-id> output/<template-id>/` (or `scripts/create_workspace.py`). If iterating a user-provided HTML that already came from this skill, edit that copy.
+- Start from the official `resume.html`. Replace visible text so it matches the confirmed YAML. Keep CSS, class names, DOM structure, and `data-template="<id>"` / `data-resume-*` markers.
+- Add or remove entry blocks only by duplicating or deleting an existing official block of the same kind. Do not introduce a new grid, sidebar, or font system.
+- Replace only content and necessary asset references first. Adjust positions after content is stable.
 - Keep class names and style tokens consistent.
+- Forbidden: a blank `resume.html` written from scratch; any template id outside the allowlist.
 
 For a one-page A4 resume, use absolute-positioned blocks only when preserving a strict template. For new templates, stable CSS grids are acceptable, but always export and screenshot-test.
 
@@ -236,11 +296,16 @@ After the first PDF export, inspect the screenshot as a whole page, not only lin
 
 ### Step 6: Export and QA
 
-Run export and QA every time content or layout changes materially.
+Run export and QA every time content or layout changes materially. **Skipping QA is forbidden.** If page count ≠ 1, the resume is not done — do not deliver it.
+
+```bash
+python scripts/export_and_qa.py output/<id>/resume.html --pdf output/<id>/resume.pdf --template <id>
+node scripts/check-template-id.mjs --html output/<id>/resume.html --template <id>
+```
 
 Minimum checks:
 
-1. `pdfinfo` confirms `Pages: 1` and A4 portrait.
+1. `pdfinfo` confirms `Pages: 1` and A4 portrait. This is a hard stop.
 2. `pdffonts` confirms the intended font family, usually `PingFangSC-Regular` and `PingFangSC-Semibold`.
 3. `pdftotext -layout` confirms module order and no old-person or old-template text remains.
 4. Render a JPEG/PNG screenshot using `pdftoppm` and inspect visually.
@@ -267,6 +332,9 @@ When visual QA matters, show or inspect the rendered screenshot before declaring
 
 ## Bundled Resources
 
+- `schema/resume.schema.json`: copy-paste resume data schema (name, title, contacts, summary, experience, projects, education, skills).
+- `examples/demo.data.yaml`: human-copyable demo facts.
+- `examples/demo/`: official `basic-a4` filled from that YAML. Open `examples/demo/resume.html` immediately.
 - `assets/templates/basic-a4/`: baseline one-page resume template. Single column, absolute positioning, blue-gray color scheme.
 - `assets/templates/editorial/`: dual-column grid. Left sidebar for education/skills/QR, right main for narrative. Monochrome (no color highlights), hierarchy through weight/size.
 - `assets/templates/sidebar-compact/`: dark sidebar (deep navy) + white main body. Avatar/contact/education/skills in sidebar, experience/projects in main. Tags for skills.
@@ -282,8 +350,9 @@ When visual QA matters, show or inspect the rendered screenshot before declaring
 - `references/template-contract.md`: layout contract for the basic A4 template.
 - `references/template-expansion.md`: protocol for adding new template styles with template Agents and main-Agent acceptance gates.
 - `references/qa-checklist.md`: final QA checklist and common failure modes.
-- `scripts/create_workspace.py`: copy a template into a working directory.
-- `scripts/export_and_qa.py`: export an HTML resume to PDF and run basic checks.
+- `scripts/create_workspace.py`: copy a template into a working directory (`output/<template-id>/`).
+- `scripts/export_and_qa.py`: export an HTML resume to PDF and run basic checks, including the `data-template` fingerprint and one-page gate.
+- `scripts/check-template-id.mjs`: fail if output HTML is missing `data-template="<id>"` from the allowlist.
 
 ## Quick Start Commands
 
@@ -292,24 +361,26 @@ Prerequisites: Chrome or Chromium for PDF export, and poppler (`pdfinfo`/`pdffon
 Create a working copy from the bundled template:
 
 ```bash
-python scripts/create_workspace.py --template basic-a4 --output /path/to/resume-workspace
+python scripts/create_workspace.py --template basic-a4 --output output/basic-a4
 ```
 
-Export and QA the resume:
+Export and QA the resume (one-page + official-template fingerprint):
 
 ```bash
-python scripts/export_and_qa.py /path/to/resume-workspace/resume.html --pdf /path/to/resume-workspace/resume.pdf --strict-final
+python scripts/export_and_qa.py output/basic-a4/resume.html --pdf output/basic-a4/resume.pdf --template basic-a4 --strict-final
+node scripts/check-template-id.mjs --html output/basic-a4/resume.html --template basic-a4
 ```
 
 Use `--strict-final` for real candidate resumes so demo placeholders such as fake names, fake contact details, and `example.com` are rejected. The QA script also fails the resume when the main content bottom whitespace exceeds 15% of page height; use `--max-bottom-whitespace` only if a different template has an intentional footer system.
 
 ## Output Convention
 
-Default deliverables:
+Default deliverables live under `output/<template-id>/`:
 
-- `<candidate-name>-<target-role>-模板版.html`
-- `<candidate-name>-<target-role>-模板版.pdf`
-- Optional working directory containing assets and scripts.
+- `output/<template-id>/resume.html` (official template copy, text replaced from YAML)
+- `output/<template-id>/resume.pdf` (exactly one A4 page)
+- `output/<template-id>/resume.data.yaml` (the facts that were applied)
+- Optional named exports: `<candidate-name>-<target-role>-模板版.html` / `.pdf`
 
 Final response should include:
 

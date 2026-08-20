@@ -38,6 +38,7 @@ Use this reference when editing `assets/templates/basic-a4/resume.html` or a res
 
 Keep CSS class names free to express each template's visual language, and use lightweight `data-*` markers for shared resume semantics:
 
+- `data-template="<id>"`: official template fingerprint on `<html>` and the page root. QA fails without it.
 - `data-resume-page`: the printable A4 canvas.
 - `data-resume-section="header|intro|education|experience|projects|skills|honors"`: a section container or, for absolute layouts, its section title.
 - `data-resume-entry`: one education, company, internship, or project entry.

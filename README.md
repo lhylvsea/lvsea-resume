@@ -36,6 +36,18 @@ Skill 内置 12 套 A4 模板，并把一页排版、内容密度、头像、二
 
 ![Vibe Resume Skill 工作原理](assets/demos/hero.png)
 
+## 30 秒
+
+1. 复制 [`examples/demo.data.yaml`](examples/demo.data.yaml)（或按同样字段写自己的经历）发给 AI。
+2. 指定一套模板，例如 `swiss-neue`；不指定则默认 `basic-a4`。
+3. 拿到一页 HTML/PDF。AI 必须套用官方模板，不能自己发明版式。
+
+想先看成品：直接打开 [`examples/demo/resume.html`](examples/demo/resume.html)（这是 `basic-a4` 按 demo 数据渲染的结果）。
+
+```text
+把 examples/demo.data.yaml 套到 swiss-neue，输出一页简历。
+```
+
 ## 怎么用
 
 第一步，把仓库地址发给你的 AI 编程助手：

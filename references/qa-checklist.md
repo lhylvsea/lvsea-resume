@@ -7,8 +7,11 @@ Use this checklist before considering an HTML/PDF resume complete.
 Run the bundled script first:
 
 ```bash
-python scripts/export_and_qa.py path/to/resume.html --pdf path/to/resume.pdf
+python scripts/export_and_qa.py path/to/resume.html --pdf path/to/resume.pdf --template <id>
+node scripts/check-template-id.mjs --html path/to/resume.html --template <id>
 ```
+
+Hard stops before anything else: `Pages: 1`, and `data-template="<id>"` is one of the 12 official ids. If either fails, do not deliver.
 
 If checking manually, run:
 

@@ -30,6 +30,58 @@ STRICT_FINAL_FORBIDDEN_TERMS = [
     "example.com",
 ]
 
+ALLOWED_TEMPLATE_IDS = [
+    "basic-a4",
+    "editorial",
+    "sidebar-compact",
+    "timeline-grid",
+    "minimal-prose",
+    "mono-raw",
+    "code-poetry",
+    "swiss-neue",
+    "bauhaus",
+    "corporate-classic",
+    "gov-red",
+    "folio-ledger",
+]
+
+
+def check_template_fingerprint(html: Path, checks: list[dict], expected: str | None) -> None:
+    source = html.read_text(encoding="utf-8", errors="ignore")
+    found = re.findall(r'data-template\s*=\s*["\']([^"\']+)["\']', source)
+    unique = list(dict.fromkeys(found))
+    if not unique:
+        add_check(
+            checks,
+            "official template fingerprint",
+            False,
+            "No data-template attribute found. Copy assets/templates/<id>/ and edit that copy; do not write HTML from scratch.",
+        )
+        return
+    unknown = [tid for tid in unique if tid not in ALLOWED_TEMPLATE_IDS]
+    if unknown:
+        add_check(
+            checks,
+            "official template fingerprint",
+            False,
+            f"Unknown data-template {unknown}. Allowlist: {', '.join(ALLOWED_TEMPLATE_IDS)}",
+        )
+        return
+    if expected and unique != [expected]:
+        add_check(
+            checks,
+            "official template fingerprint",
+            False,
+            f"Expected data-template={expected!r}, found {unique}.",
+        )
+        return
+    add_check(
+        checks,
+        "official template fingerprint",
+        True,
+        f"data-template={unique[0]}",
+    )
+
 
 def find_forbidden_terms(haystack: str, terms: list[str]) -> list[str]:
     """Match ASCII terms on word boundaries so `dispatch`/`milestones`/`committed`
@@ -554,6 +606,7 @@ def main() -> int:
     parser.add_argument("--expected-font", help="Font substring expected in pdffonts output. Defaults to the template manifest, then PingFang.")
     parser.add_argument("--forbid-term", action="append", default=[], help="Additional forbidden term to scan.")
     parser.add_argument("--strict-final", action="store_true", help="Also reject bundled demo/template leftovers.")
+    parser.add_argument("--template", help="Expected template id. HTML must contain data-template=\"<id>\" from the 12-id allowlist.")
     parser.add_argument(
         "--max-bottom-whitespace",
         type=float,
@@ -584,6 +637,8 @@ def main() -> int:
     )
 
     checks: list[dict] = []
+    check_template_fingerprint(html, checks, args.template)
+
     chrome = find_chrome(args.chrome)
     if not chrome:
         add_check(checks, "Chrome available", False, "Chrome/Chromium was not found.")
