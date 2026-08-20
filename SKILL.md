@@ -5,7 +5,7 @@ description: Build one-page HTML/PDF resumes from copy-paste YAML using one of 1
 
 # HTML Resume Builder
 
-Use this skill to produce polished, **one-page** resume artifacts from structured facts. The default loop is **data first**: collect a `resume.data.yaml` the user can copy, wait for them to paste edits or say "apply", then restyle that data inside an official bundled template. The default output is an editable HTML file and an exported PDF that follows a selected template exactly enough for recruiting use: stable A4 dimensions, consistent typography, predictable spacing, clear hierarchy, verified screenshot, and no accidental sensitive-material leaks.
+Use this skill to produce polished, **one-page** resume artifacts from structured facts. The default loop is **data first**: keep a `raw.data.yaml` inventory, copy selected entries into one `resume.data.yaml` per job, then apply that file to an official template. The default output is an editable HTML file and an exported PDF that follows a selected template exactly enough for recruiting use: stable A4 dimensions, consistent typography, predictable spacing, clear hierarchy, verified screenshot, and no accidental sensitive-material leaks.
 
 This skill is intentionally workflow-heavy. Resume work fails when the model jumps straight into writing prose, invents a new HTML document, or nudges layout by eye without QA. Follow the **Mandatory Workflow** below before any other step.
 
@@ -251,9 +251,9 @@ Run the Mandatory Workflow first. The steps below are intake details, not a lice
 
 对于已有 HTML 模板，只编辑 `output/<template-id>/` 里的副本。除非模板已经无法修复，否则不要从零重建布局。
 
-### Step 2: Fact Extraction into `resume.data.yaml`
+### Step 2: Fact Extraction into `raw.data.yaml`
 
-Extract facts from source files and websites into `resume.data.yaml` (schema: `schema/resume.schema.json`). **Show this file to the user so they can copy it.** Keep a short fact inventory before writing:
+Extract facts from source files and websites into `raw.data.yaml` (schema: `schema/resume.schema.json`). **Show this inventory so the user can copy it and keep adding.** Only after a target job exists, copy selected entries into `resume.data.yaml`. Keep a short fact inventory before writing:
 
 - Education: school, major, dates, GPA/rank, awards/certificates.
 - Internships: company, role, dates, responsibilities, shipped outputs, measurable results.
