@@ -36,9 +36,9 @@ Skill 内置 12 套 A4 模板，并把一页排版、内容密度、头像、二
 
 4. **只打磨内容，先不排版**
 
-   句子空、动词弱、和 JD 对不上，但版式已经够用。先改 YAML：紧句、STAR、关键词覆盖；数字不够就问，不编造。打磨稿和原稿成对给你复制，确认后再套模板。
+   句子空、动词弱、和 JD 对不上，但版式已经够用。这时才另出一份打磨 YAML 给你对比；平时只有 `resume.data.yaml` 一份。
 
-   `先打磨 resume.data.yaml，不要套模板。对照 examples/demo.data.yaml 和 examples/demo.polished.data.yaml 的力度，给我 before/after。`
+   `先打磨这份 resume.data.yaml，不要套模板。给我 before/after。`
 
 ![Vibe Resume Skill 工作原理](assets/demos/hero.png)
 

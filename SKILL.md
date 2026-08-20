@@ -27,17 +27,18 @@ Suggested path: write `resume.data.yaml` where the user can see it, then copy it
 
 Do not start HTML work until the user pastes an edited YAML, points at a file, or explicitly asks to apply the current draft. If facts are incomplete, ask — do not invent metrics, employers, or dates.
 
-### 2.5 Content polish (`optimize` mode) — YAML only
+### 2.5 Content polish (`optimize` mode) — only when the user is 润色
 
-When the user asks to 打磨 / 润色 / 优化内容 / 针对 JD / match keywords / rewrite bullets, do **not** jump to HTML. Follow `references/copy-optimize.md`:
+**Default is one file:** `resume.data.yaml`. Do not create `resume.polished.data.yaml` (or any published/polished sibling) on a normal collect / apply / restyle run.
+
+Only when the user asks to 打磨 / 润色 / 优化内容 / 针对 JD / match keywords / rewrite bullets, follow `references/copy-optimize.md`:
 
 1. Rewrite `summary`, `experience[].items[].body`, `projects[].bullets`, and skill **order** in YAML only.
-2. Write a sibling `resume.polished.data.yaml` (keep the draft). Fill optional `target_role`, `jd`, and `optimize` (never print these).
-3. Show the before/after YAML so the user can copy/paste.
+2. Then you may write a sibling `resume.polished.data.yaml` so they can compare. Fill optional `target_role`, `jd`, and `optimize` (never print these).
+3. Show the before/after. If they accept, that file becomes the source for apply; if they reject, keep the original `resume.data.yaml`.
 4. Do not invent metrics, employers, tools, or JD-only skills. Ask for missing numbers; list uncovered JD keywords as ask / do-not-claim.
-5. Wait until they accept the polished YAML or say apply. Then continue at step 3 with the **accepted** file.
 
-See `examples/demo.data.yaml` vs `examples/demo.polished.data.yaml` for the expected tightness: same facts, shorter verbs, no new numbers.
+`examples/demo.polished.data.yaml` is a 润色示例, not part of the default demo path. Everyday use is still `examples/demo.data.yaml` only.
 
 ### 3. Copy the official template, then edit that copy only
 

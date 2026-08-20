@@ -26,19 +26,18 @@ These stack on top of the Content Preservation & Deletion Gate and the no-invent
 4. **`jd` and `optimize` never print.** Same as `notes`. Do not render them in HTML.
 5. **YAML before HTML.** Do not "polish" by rewriting sentences only inside `resume.html`. The polished file is the source of truth for apply.
 
-## File pair
+## Files (only during 润色)
 
-| File | Meaning |
-|------|---------|
-| `resume.data.yaml` | Draft / current facts. Keep this. |
-| `resume.polished.data.yaml` | Same facts, tighter wording. What you show and, after accept, apply. |
+Default product path uses **one** file: `resume.data.yaml`. Never create a polished/published sibling unless this optimize pass is running.
 
-Suggested copies when applying: `output/<template-id>/resume.data.yaml` (the accepted file). Do not overwrite the user's draft until they say the polished version is the new source.
+| File | When |
+|------|------|
+| `resume.data.yaml` | Always. The only file for collect / apply / restyle. |
+| `resume.polished.data.yaml` | **Only** in this 润色 pass, so the user can compare. Delete or ignore it after they accept or reject. |
 
-Demo pair (same person, same numbers):
+After accept, apply the accepted YAML (often by replacing `resume.data.yaml`). Do not overwrite the draft until they say so.
 
-- `examples/demo.data.yaml` — draft
-- `examples/demo.polished.data.yaml` — polished
+`examples/demo.polished.data.yaml` is a reference for tightness, not a file agents should emit on every resume.
 
 ## Schema fields for this pass
 
