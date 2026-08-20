@@ -1,6 +1,6 @@
 ---
 name: html-resume-builder
-description: Build one-page HTML/PDF resumes from copy-paste YAML using one of 12 official templates. HARD GATES: deliver exactly one A4 page; never invent a layout — copy assets/templates/<id> into output/<id>/ and edit that copy only. Collect facts into resume.data.yaml for the user to copy, apply pasted YAML by replacing visible text in the official resume.html, then run QA. Default template is basic-a4. Use when creating, iterating, polishing, migrating, exporting, or designing resume/CV HTML/PDF.
+description: Build one-page HTML/PDF resumes from copy-paste YAML using one of 12 official templates. HARD GATES: deliver exactly one A4 page; never invent a layout — copy assets/templates/<id> into output/<id>/ and edit that copy only. Collect facts into resume.data.yaml for the user to copy; if they ask to 打磨/润色/优化内容 or match a JD, rewrite YAML first (references/copy-optimize.md) and show before/after. Apply pasted YAML by replacing visible text in the official resume.html, then run QA. Default template is basic-a4. Use when creating, iterating, polishing copy, migrating, exporting, or designing resume/CV HTML/PDF.
 ---
 
 # HTML Resume Builder
@@ -13,7 +13,7 @@ When expanding the template library, work one direction at a time: produce a bri
 
 ## Mandatory Workflow (do this every time)
 
-These six steps are hard gates. Skipping them is a failed run, even if the page looks fine.
+These steps are hard gates. Skipping them is a failed run, even if the page looks fine. Step 2.5 (content polish) is required whenever the user asked to 打磨 / 润色 / 优化内容 or match a JD; otherwise collect YAML and wait as usual.
 
 ### 1. Collect facts into `resume.data.yaml`
 
@@ -26,6 +26,18 @@ Suggested path: write `resume.data.yaml` where the user can see it, then copy it
 ### 2. Wait for the user to paste YAML back or say apply
 
 Do not start HTML work until the user pastes an edited YAML, points at a file, or explicitly asks to apply the current draft. If facts are incomplete, ask — do not invent metrics, employers, or dates.
+
+### 2.5 Content polish (`optimize` mode) — YAML only
+
+When the user asks to 打磨 / 润色 / 优化内容 / 针对 JD / match keywords / rewrite bullets, do **not** jump to HTML. Follow `references/copy-optimize.md`:
+
+1. Rewrite `summary`, `experience[].items[].body`, `projects[].bullets`, and skill **order** in YAML only.
+2. Write a sibling `resume.polished.data.yaml` (keep the draft). Fill optional `target_role`, `jd`, and `optimize` (never print these).
+3. Show the before/after YAML so the user can copy/paste.
+4. Do not invent metrics, employers, tools, or JD-only skills. Ask for missing numbers; list uncovered JD keywords as ask / do-not-claim.
+5. Wait until they accept the polished YAML or say apply. Then continue at step 3 with the **accepted** file.
+
+See `examples/demo.data.yaml` vs `examples/demo.polished.data.yaml` for the expected tightness: same facts, shorter verbs, no new numbers.
 
 ### 3. Copy the official template, then edit that copy only
 
@@ -242,7 +254,9 @@ Rank facts by role relevance, but do not silently remove content from an existin
 
 ### Step 3: Resume Copywriting
 
-Write in recruiter-friendly Chinese. Prefer compact STAR-style statements:
+If the user asked to 打磨内容 or match a JD, Mandatory Workflow **2.5** and `references/copy-optimize.md` come first. This step is the same writing bar used inside that YAML pass — it is not a substitute for showing a polished YAML file.
+
+Write in recruiter-friendly Chinese (or the user's language). Prefer compact STAR-style statements:
 
 - Situation/Task: the problem, scene, or requirement.
 - Action: what the candidate personally did.
@@ -250,7 +264,7 @@ Write in recruiter-friendly Chinese. Prefer compact STAR-style statements:
 
 Good line pattern:
 
-`面对 [具体场景/问题]，负责 [个人动作]，通过 [方法/工具/流程] 完成 [交付物]，最终 [结果/影响]。`
+`面对 [具体场景/问题]，通过 [个人动作 + 方法/工具] 交付 [产物]，结果 [已有事实]。`
 
 Avoid weak filler:
 
@@ -258,8 +272,11 @@ Avoid weak filler:
 - “参与相关工作”
 - “负责部分事项”
 - “学习能力强”
+- “负责 / Helped with / Worked on” as the only verb
 
-If a metric is not public or not known, do not invent one. Use verifiable alternatives: release status, review passed, coverage scope, samples/cases, team adoption, portfolio link.
+If a metric is not public or not known, do not invent one and do not guess “约 30%”. Ask, then use verifiable alternatives: release status, review passed, coverage scope, samples/cases, team adoption, portfolio link.
+
+When a JD is present, weave only keywords the YAML already supports. Unproven JD skills stay in `optimize.notes` as ask / do-not-claim — never in `skills` or bullets.
 
 ### Step 4: Apply YAML into the official HTML (do not invent a layout)
 
@@ -363,8 +380,9 @@ When visual QA matters, show or inspect the rendered screenshot before declaring
 
 ## Bundled Resources
 
-- `schema/resume.schema.json`: copy-paste resume data schema (name, title, contacts, summary, experience, projects, education, skills).
-- `examples/demo.data.yaml`: human-copyable demo facts.
+- `schema/resume.schema.json`: copy-paste resume data schema (name, title, target_role, contacts, summary, experience, projects, education, skills, plus optional `jd` / `optimize` that never print).
+- `examples/demo.data.yaml`: human-copyable demo facts (draft).
+- `examples/demo.polished.data.yaml`: same demo facts after optimize mode — tighter copy, no new metrics.
 - `examples/demo/`: official `basic-a4` filled from that YAML. Open `examples/demo/resume.html` immediately.
 - `assets/templates/basic-a4/`: baseline one-page resume template. Single column, absolute positioning, blue-gray color scheme.
 - `assets/templates/editorial/`: dual-column grid. Left sidebar for education/skills/QR, right main for narrative. Monochrome (no color highlights), hierarchy through weight/size.
@@ -373,13 +391,14 @@ When visual QA matters, show or inspect the rendered screenshot before declaring
 - `assets/templates/minimal-prose/`: ultra-clean single-column, Stripe/Notion docs aesthetic. No rules, no color — hierarchy purely through weight, size, and generous whitespace.
 - `assets/templates/mono-raw/`: Brutalist monospace (Menlo/SF Mono). Pure black-on-white, dashed dividers, `>` prefixed sub-headings, data in bold. Raw, honest, technical.
 - `assets/templates/code-poetry/`: source code metaphor. `/* name */` comment block, `// SECTION` headers, `fn title()` entries, orange-highlighted metrics, `import {}` skills. Left gutter with line numbers.
-- `assets/templates/swiss-neue/`: Swiss International Typographic Style. Invisible grid (26mm label column right-aligned), mathematical spacing (8/4.5/2.5mm), light-weight (300) muted-red name as sole accent. Zero decorative elements.
+- `assets/templates/swiss-neue/`: Swiss International Typographic Style. Invisible grid (16mm label column right-aligned), mathematical spacing (8/4.5/2.5mm), light-weight (300) muted-red name as sole accent. Zero decorative elements.
 - `assets/templates/bauhaus/`: geometric single-column layout with red, blue, and yellow accents for creative roles.
 - `assets/templates/corporate-classic/`: restrained black-gray corporate layout for formal delivery.
 - `assets/templates/gov-red/`: Song-type institutional layout with restrained red section rules.
 - `assets/templates/folio-ledger/`: European annual-report ledger with a full-height folio rail, numbered sections, and a single recruiter reading column.
 - `references/template-contract.md`: layout contract for the basic A4 template.
 - `references/template-expansion.md`: protocol for adding new template styles with template Agents and main-Agent acceptance gates.
+- `references/copy-optimize.md`: YAML-first content polish — STAR/tight verbs, JD keywords, no invented metrics, before/after pair.
 - `references/qa-checklist.md`: final QA checklist and common failure modes.
 - `scripts/create_workspace.py`: copy a template into a working directory (`output/<template-id>/`).
 - `scripts/export_and_qa.py`: export an HTML resume to PDF and run basic checks, including the `data-template` fingerprint and one-page gate.
@@ -411,6 +430,7 @@ Default deliverables live under `output/<template-id>/`:
 - `output/<template-id>/resume.html` (official template copy, text replaced from YAML)
 - `output/<template-id>/resume.pdf` (exactly one A4 page)
 - `output/<template-id>/resume.data.yaml` (the facts that were applied)
+- Optional: `resume.polished.data.yaml` next to the draft when optimize mode ran
 - Optional named exports: `<candidate-name>-<target-role>-模板版.html` / `.pdf`
 
 Final response should include:

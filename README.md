@@ -34,6 +34,12 @@ Skill 内置 12 套 A4 模板，并把一页排版、内容密度、头像、二
 
    `基于这份 JD 调整为数据产品方向，保留原始事实，并单独导出一个版本。`
 
+4. **只打磨内容，先不排版**
+
+   句子空、动词弱、和 JD 对不上，但版式已经够用。先改 YAML：紧句、STAR、关键词覆盖；数字不够就问，不编造。打磨稿和原稿成对给你复制，确认后再套模板。
+
+   `先打磨 resume.data.yaml，不要套模板。对照 examples/demo.data.yaml 和 examples/demo.polished.data.yaml 的力度，给我 before/after。`
+
 ![Vibe Resume Skill 工作原理](assets/demos/hero.png)
 
 ## 30 秒
@@ -126,6 +132,7 @@ https://github.com/KevinYoung-Kw/vibe-resume-skill
 ## AI 会自动处理什么
 
 - 根据经历和目标岗位整理内容，保留真实事实，不编造指标
+- 需要时先打磨 YAML（紧句、强动词、JD 关键词），给出 before/after，再套官方模板
 - 区分教育、实习、项目与能力，避免经历放错位置
 - 根据内容多少调整字号、行距与段落间距
 - 尽量保持一页，并避免文字溢出、重叠或异常换行

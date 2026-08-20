@@ -1,0 +1,121 @@
+# Vibe Resume demo data — POLISHED sibling of examples/demo.data.yaml.
+# Same person, same employers, same dates, same metrics. Tighter copy only.
+# Official draft: examples/demo.data.yaml
+# Schema: schema/resume.schema.json
+# Demo contacts are fake. Replace before any real application.
+
+name: 示例候选人
+name_en: Alex Example
+title: AI 产品 / 数据产品 / 增长产品
+target_role: AI 产品经理实习
+major: 软件工程
+
+contacts:
+  phone: "138-0000-0000"
+  email: candidate@example.com
+  website: https://example.com
+
+jd: >
+  AI 产品经理实习生：负责智能检索 / Agent 助手的需求拆解、原型与评测。
+  要求：PRD、Figma、用户研究；熟悉 Prompt / 评测指标 / Badcase；
+  能与算法协作，用数据验证搜索与回答质量。加分：SQL、增长看板、低代码原型。
+
+summary: >
+  AI / 数据产品候选人，能把模糊需求拆成可验证的原型、评测指标和交付路径。
+  实习覆盖智能检索、模型评测与创作者增长看板，习惯用 Case、实验和上线结果说话。
+
+education:
+  - school: 岭南科技大学
+    school_en: Lingnan University of Science and Technology
+    degree: 本科
+    major: 软件工程
+    dates: 2022.09 - 2026.06
+    gpa: 3.8/5.0
+    rank: 专业前10%
+    honors: 校级一等奖学金、创新创业竞赛金奖
+    notes: 主修数据结构、数据库系统、人机交互、软件工程、机器学习基础、产品设计方法等。证书：CET-6 540。
+
+experience:
+  - org: 某 AI 应用团队
+    role: AI 产品经理
+    kind: internship
+    dates: 2025.06 - 2026.03
+    items:
+      - title: 智能检索助手｜从需求分析到原型验证
+        body: >
+          针对知识库“搜得到、定位难”，设计检索入口、结果聚合、答案引用与反馈闭环；
+          交付 PRD、Figma 原型和可交互 Demo，并推动进入研发排期，验证搜索定位效率的改进路径。
+      - title: 模型效果评测｜指标体系与 Badcase 归因
+        body: >
+          搭建准确性 / 可读性 / 引用一致性评测表，沉淀 300+ 条典型 Case，与算法复盘回答偏差；
+          通过 Prompt 调优与样本分层，将核心场景通过率从 72% 提升至 86%。
+  - org: 某内容增长团队
+    role: 产品助理
+    kind: internship
+    dates: 2025.01 - 2025.05
+    items:
+      - title: 创作者数据看板｜指标拆解与运营提效
+        body: >
+          针对运营手工汇总慢，拆解曝光、点击、转化、留存指标，设计看板字段与筛选；
+          上线后周报整理从 4h 降到 40min，支撑 20+ 位创作者复盘内容表现。
+
+projects:
+  - name: 校园 AI 助手
+    subtitle: Agent Workflow 原型
+    dates: 2025.03 - 2025.06
+    bullets:
+      - 针对校园事务咨询高频问题，设计「问题识别 → 知识检索 → 表单引导 → 人工转接」流程，用低代码搭出可演示原型；30 人试用后沉淀 FAQ、异常兜底与流程优化清单。
+  - name: 数据分析课程项目
+    subtitle: 用户流失预测
+    dates: 2024.09 - 2024.12
+    bullets:
+      - 基于公开数据集完成行为清洗、特征构造与流失预测，并把模型结果转译为产品策略；输出分析报告与可视化仪表盘，获课程项目优秀评级。
+
+skills:
+  - label: AI 产品
+    items:
+      - 模型评测
+      - Badcase 归因
+      - Prompt / Context 工程
+      - 搜索体验优化
+      - Agent Workflow
+      - 需求分析
+  - label: 产品交付
+    items:
+      - PRD
+      - Figma
+      - 指标拆解
+      - 用户访谈
+      - 竞品分析
+      - 版本回归
+  - label: 数据工具
+    items:
+      - SQL
+      - Python
+      - 可视化看板
+      - Excel
+  - label: 工具链
+    items:
+      - Codex
+      - Claude Code
+      - Cursor
+      - Obsidian
+
+languages:
+  - CET-6 540
+
+assets:
+  avatar: assets/avatar.png
+  qr: assets/qr.png
+  qr_caption: 作品集二维码
+
+optimize:
+  status: polished
+  source: examples/demo.data.yaml
+  notes: >
+    Tightened verbs and length only. Kept 300+ / 72→86 / 4h→40min / 20+ / 30人 / CET-6 540.
+    JD covered: 检索, 评测, Prompt, Badcase, PRD, Figma, SQL, Agent, 低代码原型.
+    ask: none (demo). do-not-claim: none added.
+    Skills reordered toward AI PM intern JD; no skill invented.
+
+notes: Demo only. Do not treat these names, metrics, or contacts as a real person.
