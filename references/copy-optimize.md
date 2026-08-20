@@ -2,19 +2,19 @@
 
 Dedicated **writing** pass. Layout, templates, and one-page QA stay in `SKILL.md`. Use this file when the user asks to 打磨 / 润色 / 优化内容 / 针对 JD / match keywords / rewrite bullets.
 
-This is not a web editor. Rewrite **YAML only**, show a before/after pair, wait for the user to accept, then apply visible text into an official template copy.
+This is not a web editor. Select from `raw.data.yaml`, write one `resume.data.yaml`, show the selection, wait, then apply that resume YAML to a template.
 
 ## When to run
 
-Run this pass when any of these is true:
+Run this pass when exporting a job-specific resume from raw, or when the user says 打磨 / 润色 / 针对 JD.
 
-- The user says 打磨、润色、优化内容、改句子、量化、去口语、弱动词、太长、STAR、针对 JD、关键词.
-- They paste a job description and already have a `resume.data.yaml`.
-- They point at `examples/demo.data.yaml` vs `examples/demo.polished.data.yaml` and say "do that to mine".
+- Input: `raw.data.yaml` (and a JD or target role).
+- Output: one `resume.data.yaml` for that job.
+- Then apply `resume.data.yaml` to a template.
 
-Do **not** start this pass in the middle of HTML edits. If HTML already exists, extract current facts back into YAML first (or edit the existing `resume.data.yaml`), polish that, then re-apply.
+Do not polish inside HTML. Do not create `*.polished.data.yaml`.
 
-If facts are still missing, finish Mandatory Workflow step 1 first. Empty YAML cannot be polished.
+If raw is empty, finish collecting facts first.
 
 ## Hard gates (content)
 
@@ -26,18 +26,16 @@ These stack on top of the Content Preservation & Deletion Gate and the no-invent
 4. **`jd` and `optimize` never print.** Same as `notes`. Do not render them in HTML.
 5. **YAML before HTML.** Do not "polish" by rewriting sentences only inside `resume.html`. The polished file is the source of truth for apply.
 
-## Files (only during 润色)
+## Files
 
-Default product path uses **one** file: `resume.data.yaml`. Never create a polished/published sibling unless this optimize pass is running.
+| File | Meaning |
+|------|---------|
+| `raw.data.yaml` | 履历库. Keep adding. Never print. |
+| `resume.data.yaml` | This job. Copied from raw, then polished. Apply this. |
 
-| File | When |
-|------|------|
-| `resume.data.yaml` | Always. The only file for collect / apply / restyle. |
-| `resume.polished.data.yaml` | **Only** in this 润色 pass, so the user can compare. Delete or ignore it after they accept or reject. |
+Demo: `examples/raw.data.yaml` (has frontend / 社团 / 视觉, unused on the AI-product page) → `examples/demo.data.yaml` (the export).
 
-After accept, apply the accepted YAML (often by replacing `resume.data.yaml`). Do not overwrite the draft until they say so.
-
-`examples/demo.polished.data.yaml` is a reference for tightness, not a file agents should emit on every resume.
+A second job = a second resume.data.yaml. Same raw.
 
 ## Schema fields for this pass
 
@@ -95,7 +93,7 @@ English equivalent when the resume is English: Google X-Y-Z only if X and Y are 
 
 ### 5. Show before / after, then wait
 
-Print both YAMLs (or a per-entry diff plus the full polished file). Tell the user they can copy `resume.polished.data.yaml`.
+Show the selected entry ids and the full `resume.data.yaml`. Raw stays untouched.
 
 Wait for: paste-back, "apply", "就用打磨版", or an edit. Then go to Mandatory Workflow step 3 (copy official template) using the **accepted** YAML.
 
@@ -147,7 +145,7 @@ If a line has no number:
 ```
 
 ```text
-对照 examples/demo.data.yaml 和 examples/demo.polished.data.yaml 的力度，打磨我这份。
+从 examples/raw.data.yaml 按这份 JD 导出 resume.data.yaml，先列出选了哪些 id。
 ```
 
 ## What this skill does not do

@@ -36,15 +36,15 @@ Skill 内置 12 套 A4 模板，并把一页排版、内容密度、头像、二
 
 4. **只打磨内容，先不排版**
 
-   句子空、动词弱、和 JD 对不上，但版式已经够用。这时才另出一份打磨 YAML 给你对比；平时只有 `resume.data.yaml` 一份。
+   履历先堆在 `raw.data.yaml`。对着这份 JD 从 raw **复制**适合的经历，打磨成这一次的 `resume.data.yaml`，再套模板。投 B 岗用同一份 raw 再导一份，不要从 raw 里删。
 
-   `先打磨这份 resume.data.yaml，不要套模板。给我 before/after。`
+   `从 raw.data.yaml 按这份 JD 导出 resume.data.yaml，先给我看选了哪些经历。`
 
 ![Vibe Resume Skill 工作原理](assets/demos/hero.png)
 
 ## 30 秒
 
-1. 复制 [`examples/demo.data.yaml`](examples/demo.data.yaml)（或按同样字段写自己的经历）发给 AI。
+1. 先往 [`examples/raw.data.yaml`](examples/raw.data.yaml) 里记履历；针对某个岗位再导出一份 [`examples/demo.data.yaml`](examples/demo.data.yaml) 这样的 `resume.data.yaml`。
 2. 指定一套模板，例如 `swiss-neue`；不指定则默认 `basic-a4`。
 3. 拿到一页 HTML/PDF。AI 必须套用官方模板，不能自己发明版式。
 

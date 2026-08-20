@@ -1,5 +1,7 @@
 # Examples
 
-- `demo.data.yaml` — the default copy-paste facts. Everyday path: copy this, edit, paste back, apply to a template.
-- `demo/` — official `basic-a4` filled from `demo.data.yaml`. Open `demo/resume.html`.
-- `demo.polished.data.yaml` — optional 润色示例 (same facts, tighter). Only relevant when the user asks to polish copy. Do not create a polished sibling in a normal run.
+- `raw.data.yaml` — 履历库. Many internships/projects, including ones that will not all go on one page.
+- `demo.data.yaml` — one `resume.data.yaml`: AI 产品 intern export copied from raw (search + growth + two projects).
+- `demo/` — official `basic-a4` filled from `demo.data.yaml`.
+
+Export is copy-from-raw, not a third published file. Job B gets another resume YAML from the same raw.

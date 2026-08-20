@@ -1,6 +1,6 @@
 ---
 name: html-resume-builder
-description: Build one-page HTML/PDF resumes from copy-paste YAML using one of 12 official templates. HARD GATES: deliver exactly one A4 page; never invent a layout — copy assets/templates/<id> into output/<id>/ and edit that copy only. Collect facts into resume.data.yaml for the user to copy; if they ask to 打磨/润色/优化内容 or match a JD, rewrite YAML first (references/copy-optimize.md) and show before/after. Apply pasted YAML by replacing visible text in the official resume.html, then run QA. Default template is basic-a4. Use when creating, iterating, polishing copy, migrating, exporting, or designing resume/CV HTML/PDF.
+description: Build one-page HTML/PDF resumes from copy-paste YAML using one of 12 official templates. HARD GATES: deliver exactly one A4 page; never invent a layout — copy assets/templates/<id> into output/<id>/ and edit that copy only. Keep a full inventory in raw.data.yaml. For each job, COPY selected entries into resume.data.yaml (polish there), then apply that file to a template. Apply pasted YAML by replacing visible text in the official resume.html, then run QA. Default template is basic-a4. Use when creating, iterating, polishing copy, migrating, exporting, or designing resume/CV HTML/PDF.
 ---
 
 # HTML Resume Builder
@@ -13,32 +13,42 @@ When expanding the template library, work one direction at a time: produce a bri
 
 ## Mandatory Workflow (do this every time)
 
-These steps are hard gates. Skipping them is a failed run, even if the page looks fine. Step 2.5 (content polish) is required whenever the user asked to 打磨 / 润色 / 优化内容 or match a JD; otherwise collect YAML and wait as usual.
+These steps are hard gates. Skipping them is a failed run, even if the page looks fine.
 
-### 1. Collect facts into `resume.data.yaml`
+There are two data files. Do not mix them.
 
-Extract education, internships, projects, skills, contacts, and assets into a YAML file that matches `schema/resume.schema.json`. Use `examples/demo.data.yaml` as the copyable shape (name, title, contacts, summary, experience[], projects[], education[], skills[]).
+| File | What it is |
+|------|------------|
+| `raw.data.yaml` | 履历库. Every job, project, campus thing the user wants remembered. Can be long. **Never printed.** |
+| `resume.data.yaml` | One application. Copied from raw, then polished for this JD. This is what you apply to a template. |
 
-**Show the YAML to the user** so they can copy it, edit it in any editor, and paste it back. Do not hide the data inside chat-only notes.
+Job A and job B share the same raw. Each gets its own `resume.data.yaml` (e.g. `output/ai-intern/resume.data.yaml` vs `output/growth/resume.data.yaml`).
 
-Suggested path: write `resume.data.yaml` where the user can see it, then copy it to `output/<template-id>/resume.data.yaml` when applying.
+### 1. Collect facts into `raw.data.yaml`
 
-### 2. Wait for the user to paste YAML back or say apply
+Extract education, internships, projects, skills, contacts, and assets into the inventory. Use `examples/raw.data.yaml` as the shape. Keep extra experiences even if they will not fit one page. Add `id` / `tags` on entries so later jobs can select them (`ai-product`, `growth`, `frontend`, …).
 
-Do not start HTML work until the user pastes an edited YAML, points at a file, or explicitly asks to apply the current draft. If facts are incomplete, ask — do not invent metrics, employers, or dates.
+**Show the raw file** so the user can copy it and keep adding facts. Do not hide the inventory in chat-only notes.
 
-### 2.5 Content polish (`optimize` mode) — only when the user is 润色
+Do **not** write `resume.data.yaml` yet unless the user already named a target job and asked to export.
 
-**Default is one file:** `resume.data.yaml`. Do not create `resume.polished.data.yaml` (or any published/polished sibling) on a normal collect / apply / restyle run.
+### 2. For a job: copy from raw → `resume.data.yaml`
 
-Only when the user asks to 打磨 / 润色 / 优化内容 / 针对 JD / match keywords / rewrite bullets, follow `references/copy-optimize.md`:
+When the user names a role or pastes a JD:
 
-1. Rewrite `summary`, `experience[].items[].body`, `projects[].bullets`, and skill **order** in YAML only.
-2. Then you may write a sibling `resume.polished.data.yaml` so they can compare. Fill optional `target_role`, `jd`, and `optimize` (never print these).
-3. Show the before/after. If they accept, that file becomes the source for apply; if they reject, keep the original `resume.data.yaml`.
-4. Do not invent metrics, employers, tools, or JD-only skills. Ask for missing numbers; list uncovered JD keywords as ask / do-not-claim.
+1. **Copy** (do not move) the matching entries from `raw.data.yaml` into a new `resume.data.yaml`. Set `layer: resume` and `source_raw`.
+2. Leave unused entries in raw (frontend intern stays in raw when exporting an AI-product resume).
+3. Polish **only** the copied `resume.data.yaml`: tighter summary/bullets, skill order, `target_role` / `jd`. Follow `references/copy-optimize.md`.
+4. Show the selected id list + the resume YAML. Wait for accept.
+5. Apply **that** `resume.data.yaml` to a template (step 3). Export is this copy logic, not a third published file.
 
-`examples/demo.polished.data.yaml` is a 润色示例, not part of the default demo path. Everyday use is still `examples/demo.data.yaml` only.
+If they later say 投 B 岗位, start a new `resume.data.yaml` from the same raw. Do not overwrite job A's file.
+
+Never delete from raw to make one page. Cuts happen only on the resume copy.
+
+### 2.5 Do not invent a polished sibling
+
+No `resume.polished.data.yaml`. The pair is raw (bank) vs resume (this job). 润色 writes into `resume.data.yaml`.
 
 ### 3. Copy the official template, then edit that copy only
 
@@ -382,9 +392,9 @@ When visual QA matters, show or inspect the rendered screenshot before declaring
 ## Bundled Resources
 
 - `schema/resume.schema.json`: copy-paste resume data schema (name, title, target_role, contacts, summary, experience, projects, education, skills, plus optional `jd` / `optimize` that never print).
-- `examples/demo.data.yaml`: human-copyable demo facts (draft).
-- `examples/demo.polished.data.yaml`: same demo facts after optimize mode — tighter copy, no new metrics.
-- `examples/demo/`: official `basic-a4` filled from that YAML. Open `examples/demo/resume.html` immediately.
+- `examples/raw.data.yaml`: demo inventory (extra frontend / 社团 / 视觉 stay here).
+- `examples/demo.data.yaml`: one job export copied from that raw (AI 产品 intern).
+- `examples/demo/`: official `basic-a4` filled from `demo.data.yaml`.
 - `assets/templates/basic-a4/`: baseline one-page resume template. Single column, absolute positioning, blue-gray color scheme.
 - `assets/templates/editorial/`: dual-column grid. Left sidebar for education/skills/QR, right main for narrative. Monochrome (no color highlights), hierarchy through weight/size.
 - `assets/templates/sidebar-compact/`: dark sidebar (deep navy) + white main body. Avatar/contact/education/skills in sidebar, experience/projects in main. Tags for skills.
@@ -430,8 +440,8 @@ Default deliverables live under `output/<template-id>/`:
 
 - `output/<template-id>/resume.html` (official template copy, text replaced from YAML)
 - `output/<template-id>/resume.pdf` (exactly one A4 page)
-- `output/<template-id>/resume.data.yaml` (the facts that were applied)
-- Optional: `resume.polished.data.yaml` next to the draft when optimize mode ran
+- `raw.data.yaml` at repo root or `output/raw.data.yaml` (inventory)
+- `output/<role-or-template>/resume.data.yaml` (this job, copied from raw)
 - Optional named exports: `<candidate-name>-<target-role>-模板版.html` / `.pdf`
 
 Final response should include:
