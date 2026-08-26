@@ -1,6 +1,6 @@
 ---
 name: html-resume-builder
-description: Build one-page HTML/PDF resumes from copy-paste YAML using one of 12 official templates. HARD GATES: deliver exactly one A4 page; never invent a layout — copy assets/templates/<id> into output/<id>/ and edit that copy only. Keep a full inventory in raw.data.yaml. For each job, COPY selected entries into resume.data.yaml (polish there), then apply that file to a template. Apply pasted YAML by replacing visible text in the official resume.html, then run QA. Default template is basic-a4. Use when creating, iterating, polishing copy, migrating, exporting, or designing resume/CV HTML/PDF.
+description: Build one-page HTML/PDF resumes from copy-paste YAML using one of 12 official templates. HARD GATES: deliver exactly one A4 page; never invent a layout — copy assets/templates/<id> into output/<id>/ and edit that copy only. Keep a full inventory in raw.data.yaml. For each job, COPY selected entries into resume.data.yaml (polish there), then apply that file to a template. Apply pasted YAML by replacing visible text in the official resume.html, then run QA. Default template is basic-a4. Use when creating, iterating, polishing copy, migrating, exporting, or designing resume/CV HTML/PDF. For polishing resume copy, prefer writing-oriented models (Claude Fable 5 / Claude Opus 4.6-4.7 or Opus 5 / Kimi K3 / GLM-5.1-5.3-max / Qwen 3.8 Max); do not use GPT-5.6 Terra/Luna or GPT-5.5 Instant.
 ---
 
 # HTML Resume Builder
@@ -266,6 +266,20 @@ Rank facts by role relevance, but do not silently remove content from an existin
 ### Step 3: Resume Copywriting
 
 If the user asked to 打磨内容 or match a JD, Mandatory Workflow **2.5** and `references/copy-optimize.md` come first. This step is the same writing bar used inside that YAML pass — it is not a substitute for showing a polished YAML file.
+
+排版、改模板可用日常编程模型。**润色简历正文**用写作向模型。
+
+推荐：
+
+- 海外：Claude Fable 5；Claude Opus 4.6 / 4.7（有 Opus 5 也行）
+- 国内：Kimi K3（K2.6 也偏写作）；智谱 GLM-5.1 / 5.2 / 5.3-max；通义千问 Qwen 3.8 Max（结构化备选）
+
+不要用：
+
+- GPT-5.6 Terra / Luna：同代里写作掉档最狠
+- GPT-5.5 默认 / Instant：日常默认档，文风空、套话多
+
+其余模型不限定。
 
 Write in recruiter-friendly Chinese (or the user's language). Prefer compact STAR-style statements:
 

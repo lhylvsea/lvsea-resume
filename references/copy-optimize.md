@@ -14,6 +14,8 @@ Run this pass when exporting a job-specific resume from raw, or when the user sa
 
 Do not polish inside HTML. Do not create `*.polished.data.yaml`.
 
+排版、改模板可用日常编程模型。**润色正文**用写作向模型：Claude Fable 5 / Claude Opus 4.6–4.7（或 Opus 5）/ Kimi K3 / GLM-5.1–5.3-max / Qwen 3.8 Max。不要用 GPT-5.6 Terra / Luna，也不要用 GPT-5.5 默认 / Instant。其余不限定。
+
 If raw is empty, finish collecting facts first.
 
 ## Hard gates (content)
