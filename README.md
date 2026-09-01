@@ -8,6 +8,20 @@
 [![HTML](https://img.shields.io/badge/Output-HTML%20%2B%20PDF-E34F26?style=flat-square)](assets/templates/basic-a4/resume.html)
 [![Skill](https://img.shields.io/badge/Format-Agent%20Skill-111111?style=flat-square)](SKILL.md)
 
+<p align="center">
+  <a href="https://colaos.ai"><img src="assets/cola-logo.png" height="56" alt="Sponsored by Cola"></a>
+  &nbsp;&nbsp;
+  <a href="https://workbuddy.homes/cases/submissions/vibe-resume/"><img src="assets/workbuddy-icon.svg" height="56" alt="WorkBuddy 蓝皮书"></a>
+</p>
+<p align="center">
+  <sub>
+    <a href="https://colaos.ai">Cola</a> 赞助
+    ·
+    收录于 <a href="https://workbuddy.homes/cases/submissions/vibe-resume/">WorkBuddy 蓝皮书</a>
+  </sub>
+</p>
+
+
 `vibe-resume-skill` 是一套给 AI 编程助手使用的简历 Skill。把你的经历、现有简历或目标岗位交给它，就能生成一份排版完整的简历；后续新增经历、替换内容或调整投递方向，也可以直接通过对话完成。
 
 Skill 内置 12 套 A4 模板，并把一页排版、内容密度、头像、二维码和最终检查等要求写进了规则。你只需要说明想改什么，剩下的编辑与排版交给 AI。
@@ -158,15 +172,6 @@ https://github.com/KevinYoung-Kw/vibe-resume-skill
 [CC BY-NC 4.0](LICENSE)。个人与非商业用途可按许可证使用；商业使用请联系作者。
 
 ---
-
-<p align="center">
-  <img src="assets/cola-logo.png" height="72" alt="Cola">
-</p>
-
-<p align="center">
-  <b>水的离子积 × <a href="https://colaos.ai">Cola</a></b><br>
-  <sub>Powered by Cola</sub>
-</p>
 
 <p align="center">
   <img src="assets/wechat-qr.jpg" width="220" alt="公众号：水的实践说"><br>
