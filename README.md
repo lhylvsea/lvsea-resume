@@ -9,13 +9,13 @@
 [![Skill](https://img.shields.io/badge/Format-Agent%20Skill-111111?style=flat-square)](SKILL.md)
 
 <p align="center">
-  <a href="https://colaos.ai"><img src="assets/cola-logo.png" height="56" alt="Sponsored by Cola"></a>
+  <a href="https://colaos.ai"><img src="assets/cola-logo.png" height="56" alt="Cola 支持"></a>
   &nbsp;&nbsp;
   <a href="https://workbuddy.homes/cases/submissions/vibe-resume/"><img src="assets/workbuddy-icon.svg" height="56" alt="WorkBuddy 蓝皮书"></a>
 </p>
 <p align="center">
   <sub>
-    <a href="https://colaos.ai">Cola</a> 赞助
+    <a href="https://colaos.ai">Cola</a> 支持
     ·
     收录于 <a href="https://workbuddy.homes/cases/submissions/vibe-resume/">WorkBuddy 蓝皮书</a>
   </sub>
