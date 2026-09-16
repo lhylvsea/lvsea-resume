@@ -26,6 +26,12 @@
 
 Skill 内置 12 套 A4 模板，并把一页排版、内容密度、头像、二维码和最终检查等要求写进了规则。你只需要说明想改什么，剩下的编辑与排版交给 AI。
 
+## Kami 方法的有界整合
+
+本仓库吸收了 [Kami](https://github.com/tw93/kami) 的部分简历写作与证据核对方法：多来源先做事实核对，项目按 Role / Actions / Impact 组织，所有权用最低真实等级表达，缺失或冲突证据不靠猜测补齐，导出后再做一次脱离作者意图的招聘者复核。
+
+这不是整库镜像：`lvsea-resume` 继续使用自己的 `raw.data.yaml` → `resume.data.yaml` 双层数据、12 套官方模板和一页 A4 硬门槛；Kami 的两页简历模板、暖色设计系统、通用文档构建器、字体与脚本不会进入本包。具体取舍和来源提交记录见 [`references/kami-adoption.md`](references/kami-adoption.md) 与 [`reports/kami-integration.md`](reports/kami-integration.md)。
+
 ![支持主流 Coding Agent](assets/demos/coding-agents.png)
 
 ## 适用场景
@@ -146,6 +152,8 @@ https://github.com/KevinYoung-Kw/vibe-resume-skill
 ## AI 会自动处理什么
 
 - 根据经历和目标岗位整理内容，保留真实事实，不编造指标
+- 多份材料先核对角色、范围、日期、单位和结果；冲突时保留问题，不替用户选择更夸张的说法
+- 用“角色 - 动作 - 结果”组织项目证据，并按实际贡献校准“主导 / 负责 / 共建 / 参与”等所有权词
 - 需要时先打磨 YAML（紧句、强动词、JD 关键词），给出 before/after，再套官方模板
 - 区分教育、实习、项目与能力，避免经历放错位置
 - 根据内容多少调整字号、行距与段落间距

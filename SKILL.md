@@ -1,6 +1,6 @@
 ---
 name: html-resume-builder
-description: Build one-page HTML/PDF resumes from copy-paste YAML using one of 12 official templates. HARD GATES: deliver exactly one A4 page; never invent a layout — copy assets/templates/<id> into output/<id>/ and edit that copy only. Keep a full inventory in raw.data.yaml. For each job, COPY selected entries into resume.data.yaml (polish there), then apply that file to a template. Apply pasted YAML by replacing visible text in the official resume.html, then run QA. Default template is basic-a4. Use when creating, iterating, polishing copy, migrating, exporting, or designing resume/CV HTML/PDF. For polishing resume copy, prefer writing-oriented models (Claude Fable 5 / Claude Opus 4.6-4.7 or Opus 5 / Kimi K3 / GLM-5.1-5.3-max / Qwen 3.8 Max); do not use GPT-5.6 Terra/Luna or GPT-5.5 Instant.
+description: Build one-page HTML/PDF resumes from copy-paste YAML using one of 12 official templates. HARD GATES: deliver exactly one A4 page; never invent a layout — copy assets/templates/<id> into output/<id>/ and edit that copy only. Keep a full inventory in raw.data.yaml. For each job, COPY selected entries into resume.data.yaml (polish there), then apply that file to a template. Before polishing, reconcile multi-source facts and calibrate ownership; write project evidence as role + action + impact without inventing metrics. Apply pasted YAML by replacing visible text in the official resume.html, then run QA and a fresh recruiter-read pass. Default template is basic-a4. Use when creating, iterating, polishing copy, migrating, exporting, or designing resume/CV HTML/PDF. This skill adopts selected Kami writing and evidence methods but not its templates, two-page contract, or build system. For polishing resume copy, prefer writing-oriented models (Claude Fable 5 / Claude Opus 4.6-4.7 or Opus 5 / Kimi K3 / GLM-5.1-5.3-max / Qwen 3.8 Max); do not use GPT-5.6 Terra/Luna or GPT-5.5 Instant.
 ---
 
 # HTML Resume Builder
@@ -31,6 +31,18 @@ Extract education, internships, projects, skills, contacts, and assets into the 
 **Show the raw file** so the user can copy it and keep adding facts. Do not hide the inventory in chat-only notes.
 
 Do **not** write `resume.data.yaml` yet unless the user already named a target job and asked to export.
+
+### 1.5 Source and claim boundary
+
+When the resume draws from more than one source, run a short truth pass before rewriting. Build a private claim ledger for every company, role, date, project name, number, metric, ownership word, and result that may appear in the output.
+
+- Mark each item as `read from source`, `user-provided`, `inferred`, `unavailable`, or `dry-run`.
+- If sources conflict on scope, owner, unit, date, or number, stop that claim and ask the user; do not silently choose the larger or more flattering version.
+- If a number has no unit or measurement basis, omit it or mark it for confirmation. A concrete qualitative result is safer than a fabricated estimate.
+- Keep missing facts in an `ask` / `do-not-claim` note. Do not fill a template slot with a plausible sentence, stock image description, or generic achievement.
+- For a single user-authored source, still preserve the source inventory and distinguish confirmed facts from editorial inference.
+
+The full source ledger and adoption boundary are documented in `references/kami-adoption.md`; this section is the runtime rule, not a request to copy Kami's package.
 
 ### 2. For a job: copy from raw → `resume.data.yaml`
 
@@ -303,6 +315,18 @@ If a metric is not public or not known, do not invent one and do not guess “�
 
 When a JD is present, weave only keywords the YAML already supports. Unproven JD skills stay in `optimize.notes` as ask / do-not-claim — never in `skills` or bullets.
 
+### 3.5 Project evidence contract: Role / Actions / Impact
+
+Adopt a compact version of Kami's project-row contract without changing this skill's one-page layout:
+
+- **Role** states what the project was and the candidate's truthful position in it. It is not a generic responsibility list.
+- **Actions** name concrete decisions, methods, tools, or artifacts. Use one main action per sentence and keep the verb tied to the candidate's own work.
+- **Impact** states an observable result: a verified metric, shipped artifact, review/adoption signal, coverage, or other interview-checkable evidence. A process description is not an impact.
+
+For `projects`, use `role` plus `bullets` to carry this structure. For `experience.items`, keep the existing `title` and make `body` a compact context → action → result line. Do not add new visible fields just to imitate Kami's two-page template.
+
+Calibrate ownership to the lowest truthful level: owner/lead only when the candidate can defend direction and outcome; use `负责`, `牵头`, `模块负责人`, `共建`, or `参与` when the scope is narrower. Do not upgrade every project to `主导`.
+
 ### Step 4: Apply YAML into the official HTML (do not invent a layout)
 
 Use the selected template directory:
@@ -400,6 +424,11 @@ Minimum checks:
    - every original company, project, date, metric, credential, and user-authored bullet is retained or explicitly approved for removal
    - compressed wording preserves the original fact, ownership, specificity, and result
    - any pending deletion proposal is surfaced to the user instead of being applied silently
+8. Run a fresh recruiter-read pass after the mechanical checks:
+   - each project or work item has a distinct role, action, and impact signal
+   - no impact row merely restates the action, and no two rows repeat the same evidence
+   - ownership words match the source ledger
+   - unresolved `ask`, `unavailable`, or `dry-run` items are not presented as confirmed facts
 
 When visual QA matters, show or inspect the rendered screenshot before declaring completion.
 
@@ -425,6 +454,10 @@ When visual QA matters, show or inspect the rendered screenshot before declaring
 - `references/template-expansion.md`: protocol for adding new template styles with template Agents and main-Agent acceptance gates.
 - `references/copy-optimize.md`: YAML-first content polish — STAR/tight verbs, JD keywords, no invented metrics, before/after pair.
 - `references/qa-checklist.md`: final QA checklist and common failure modes.
+- `references/kami-adoption.md`: the bounded Kami source audit, adapted evidence contract, and explicit exclusions.
+- `reports/kami-integration.md`: source boundary, keep/adapt/reject/invent ledger, and verification record for this integration.
+- `evals/kami-integration-cases.md`: forward retest prompts for conflicts, missing evidence, ownership, and one-page pressure.
+- `THIRD_PARTY_NOTICES.md`: upstream attribution and license boundary; no Kami code or assets are mirrored.
 - `scripts/create_workspace.py`: copy a template into a working directory (`output/<template-id>/`).
 - `scripts/export_and_qa.py`: export an HTML resume to PDF and run basic checks, including the `data-template` fingerprint and one-page gate.
 - `scripts/check-template-id.mjs`: fail if output HTML is missing `data-template="<id>"` from the allowlist.
