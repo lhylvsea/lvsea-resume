@@ -4,6 +4,8 @@ from __future__ import annotations
 import argparse
 import html as html_lib
 import json
+import locale
+import os
 import re
 import shutil
 import subprocess
@@ -99,9 +101,26 @@ def find_forbidden_terms(haystack: str, terms: list[str]) -> list[str]:
     return hits
 
 
+def decode_process_output(value: bytes) -> str:
+    """Decode UTF-8 tools and Windows code-page tools without crashing QA."""
+    encodings = ["utf-8", locale.getpreferredencoding(False)]
+    if sys.platform == "win32":
+        encodings.append("mbcs")
+    for encoding in dict.fromkeys(encodings):
+        try:
+            return value.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+    return value.decode(encodings[0], errors="replace")
+
+
 def run(command: list[str]) -> tuple[int, str, str]:
-    process = subprocess.run(command, capture_output=True, text=True)
-    return process.returncode, process.stdout, process.stderr
+    process = subprocess.run(command, capture_output=True)
+    return (
+        process.returncode,
+        decode_process_output(process.stdout),
+        decode_process_output(process.stderr),
+    )
 
 
 def find_chrome(explicit: str | None) -> str | None:
@@ -115,6 +134,14 @@ def find_chrome(explicit: str | None) -> str | None:
         shutil.which("chromium"),
         shutil.which("chromium-browser"),
     ]
+    if sys.platform == "win32":
+        for root in (
+            os.environ.get("PROGRAMFILES"),
+            os.environ.get("PROGRAMFILES(X86)"),
+            os.environ.get("LOCALAPPDATA"),
+        ):
+            if root:
+                candidates.append(str(Path(root) / "Google/Chrome/Application/chrome.exe"))
     for candidate in candidates:
         if candidate and Path(candidate).exists():
             return candidate

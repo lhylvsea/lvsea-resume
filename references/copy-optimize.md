@@ -28,6 +28,45 @@ These stack on top of the Content Preservation & Deletion Gate and the no-invent
 4. **`jd` and `optimize` never print.** Same as `notes`. Do not render them in HTML.
 5. **YAML before HTML.** Do not "polish" by rewriting sentences only inside `resume.html`. The polished file is the source of truth for apply.
 
+## Source and truth pass
+
+Run this before rewriting whenever the candidate supplies an old resume plus reviews, project notes, portfolio material, or other supporting sources.
+
+1. Extract every claim that may reach the page: names, dates, role labels, scope, numbers, units, project names, deliverables, and results.
+2. Mark each claim as `read from source`, `user-provided`, `inferred`, `unavailable`, or `dry-run` in the private notes or claim ledger.
+3. Preserve the best supported detail from each source; do not replace one source with another wholesale.
+4. If sources conflict on ownership, scope, unit, date, or number, ask the user instead of choosing the more impressive claim.
+5. Drop numbers whose unit or measurement basis is unclear. Use an interview-checkable qualitative result or an explicit question instead.
+
+The source pass is evidence control, not a license to research private facts or expose source paths in the resume.
+
+## Role / Actions / Impact
+
+Use this compact project contract when polishing `projects[].bullets` or `experience[].items[].body`:
+
+| Part | What it must carry | Failure to reject |
+|---|---|---|
+| Role | What the project was and the candidate's truthful position | Background-only description with no ownership boundary |
+| Actions | Concrete decisions, methods, tools, or artifacts performed by the candidate | Generic responsibility list or a tool name without an action |
+| Impact | A verified metric, shipped artifact, review/adoption signal, coverage, or other observable result | A process sentence such as “improved the pipeline” with no outcome |
+
+For the existing schema, `projects[].role` carries Role and `projects[].bullets` carry compact Actions + Impact. `experience[].items[].title` names the work item and `body` carries context, personal action, and result. Keep the visible schema stable; do not create a Kami-style two-page block merely to satisfy this writing contract.
+
+## Ownership calibration
+
+Choose the lowest truthful ownership word that still reflects the work:
+
+| Word | Use when |
+|---|---|
+| `owner` / `lead` / 方向负责人 | The candidate can defend the direction, trade-offs, and outcome |
+| `负责` / `drove` | The candidate independently delivered a bounded line or module |
+| `牵头` / `coordinated` | The value was orchestration across people or systems |
+| `模块负责人` | The candidate owned a specific module inside a larger line |
+| `共建` / `core contributor` | The candidate delivered a distinct piece of shared work |
+| `参与` / `implemented` | The contribution was execution without ownership of the wider result |
+
+If ownership is unclear, ask what the candidate personally delivered before upgrading a verb. Do not let every project say `主导`.
+
 ## Files
 
 | File | Meaning |

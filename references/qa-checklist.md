@@ -55,6 +55,15 @@ Open or inspect the rendered screenshot.
 - QR code and caption align; QR is not too small and does not collide with core abilities.
 - Avatar is color and correctly cropped.
 
+## Evidence and Fresh Review
+
+- Every external or supporting source used for copy is represented in the private source inventory or claim ledger.
+- Conflicting owner, scope, unit, date, or metric claims are resolved with the user; they are not silently merged.
+- Each project/work item can be read as Role → Actions → Impact, even when the visible template keeps a compact bullet format.
+- Ownership words are proportional to the source evidence; `主导` is not used as a default synonym for participation.
+- Missing, unavailable, or dry-run evidence is either kept out of visible copy or clearly marked for user confirmation.
+- After the mechanical checks, reread the page as a recruiter who has not seen the source material. Confirm that no impact line repeats its action and no two rows compete for the same proof.
+
 ## Content Preservation Review
 
 - Build a source inventory before editing an existing resume. Include text the user pasted and explicitly requested for inclusion.

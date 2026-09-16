@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/KevinYoung-Kw/vibe-resume-skill/schema/resume.schema.json",
   "title": "Vibe Resume Data",
-  "description": "Two layers: raw.data.yaml is the full inventory (never printed). resume.data.yaml is one job's selected+polished copy, then applied to a template. jd / optimize / notes / layer / source_raw / tags never print unless they are visible facts.",
+  "description": "Two layers: raw.data.yaml is the full inventory (never printed). resume.data.yaml is one job's selected+polished copy, then applied to a template. jd / optimize / notes / layer / source_raw / tags / source_ledger / claim_ledger never print unless they are visible facts.",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -185,6 +185,20 @@
     "source_raw": {
       "type": "string",
       "description": "Path of the raw.data.yaml this resume was copied from. Never print."
+    },
+    "source_ledger": {
+      "type": "array",
+      "description": "Private source boundary for multi-source fact extraction. Never print on the resume.",
+      "items": {
+        "$ref": "#/$defs/sourceLedgerEntry"
+      }
+    },
+    "claim_ledger": {
+      "type": "array",
+      "description": "Private claim-level reconciliation notes. Never print on the resume.",
+      "items": {
+        "$ref": "#/$defs/claimLedgerEntry"
+      }
     }
   },
   "$defs": {
@@ -353,6 +367,71 @@
           "items": {
             "type": "string"
           }
+        }
+      }
+    },
+    "sourceLedgerEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "status"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Human-readable source label, not a private absolute path."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "read from source",
+            "user-provided",
+            "inferred",
+            "unavailable",
+            "dry-run"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "claimLedgerEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim",
+        "status"
+      ],
+      "properties": {
+        "claim": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "read from source",
+            "user-provided",
+            "inferred",
+            "unavailable",
+            "dry-run"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "conflict": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "keep",
+            "ask",
+            "do-not-claim",
+            "omit"
+          ]
         }
       }
     }
