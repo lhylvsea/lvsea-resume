@@ -1,6 +1,6 @@
 # Template Expansion Protocol
 
-Use this reference when expanding `html-resume-builder` with additional resume templates.
+Use this reference when expanding `lvsea-resume` with additional resume templates.
 
 The default template is not a loose inspiration board. Treat `assets/templates/basic-a4/` as the baseline quality bar. New templates may vary in style, but they must match or exceed the baseline in layout stability, visual rhythm, information density, recruiting readability, and PDF export reliability.
 
